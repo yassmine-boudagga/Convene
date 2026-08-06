@@ -13,7 +13,6 @@ desktop.ini
 
 # Secrets and local config
 .env
-.env.*
 *.local
 *.secret
 *.pem
@@ -26,7 +25,6 @@ desktop.ini
 # Backend (Node.js)
 backend/node_modules/
 backend/.env
-backend/.env.*
 backend/recordings/
 backend/uploads/
 backend/npm-debug.log*
@@ -51,7 +49,6 @@ frontend/**/*.class
 
 # IA service
 ia/.env
-ia/.env.*
 ia/venv/
 ia/.venv/
 ia/__pycache__/
