@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Convene Admin — Connexion</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/admin.css">
+  <style>
+    body {
+      background: #F0F2F8;
+      background-image:
+        radial-gradient(circle at 20% 20%, rgba(249,115,22,.08) 0%, transparent 50%),
+        radial-gradient(circle at 80% 80%, rgba(14,165,233,.06) 0%, transparent 50%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      height: auto;
+      overflow: auto;
+    }
+
+    .login-wrap {
+      width: 100%;
+      max-width: 440px;
+      padding: 24px 16px;
+    }
+
+    .login-card {
+      width: 100%;
+      animation: fadeUp .4s cubic-bezier(.4,0,.2,1) forwards;
+    }
+
+    .login-brand {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      margin-bottom: 32px;
+    }
+
+    .login-brand .logo-icon {
+      width: 52px;
+      height: 52px;
+      border-radius: 14px;
+      font-size: 22px;
+      margin-bottom: 14px;
+      box-shadow: 0 8px 24px rgba(162,73,68,.25);
+    }
+
+    .login-brand .login-title {
+      font-family: 'Sora', sans-serif;
+      font-size: 22px;
+      font-weight: 800;
+      color: #0F172A;
+      letter-spacing: -.03em;
+      margin-bottom: 5px;
+    }
+
+    .login-brand .login-sub {
+      font-size: 13.5px;
+      color: #94A3B8;
+      font-weight: 500;
+    }
+
+    .login-divider {
+      height: 1px;
+      background: linear-gradient(90deg, transparent, #E2E8F0, transparent);
+      margin: 0 -40px 24px;
+    }
+
+    .login-card .form-label {
+      font-size: 13px;
+      font-weight: 600;
+      color: #374151;
+    }
+
+    .login-card .form-input {
+      padding: 11px 14px;
+      font-size: 14px;
+      border-color: #E2E8F0;
+      transition: border-color .15s, box-shadow .15s;
+    }
+
+    .login-card .form-input:focus {
+      border-color: #F97316;
+      box-shadow: 0 0 0 3px rgba(249,115,22,.12);
+    }
+
+    .login-submit {
+      height: 46px;
+      font-size: 14.5px;
+      font-weight: 700;
+      letter-spacing: .01em;
+      margin-top: 8px;
+    }
+
+    #login-error {
+      display: none;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 14px;
+      background: rgba(239,68,68,.07);
+      border: 1px solid rgba(239,68,68,.2);
+      border-radius: 8px;
+      color: #EF4444;
+      font-size: 13px;
+      font-weight: 500;
+      margin-bottom: 14px;
+    }
+
+    .login-footer {
+      text-align: center;
+      margin-top: 20px;
+      font-size: 12px;
+      color: #94A3B8;
+    }
+
+    .login-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 5px 14px;
+      background: rgba(249,115,22,.1);
+      border: 1px solid rgba(249,115,22,.2);
+      border-radius: 99px;
+      font-size: 12px;
+      font-weight: 600;
+      color: #F97316;
+      margin: 0 auto 20px;
+    }
+
+    .login-badge-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #F97316;
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50%       { opacity: .6; transform: scale(.85); }
+    }
+  </style>
+</head>
+<body>
+  <div class="login-wrap">
+    <div class="login-card">
+
+      <div class="login-brand">
+        <div class="logo-icon">
+          <img src="logo.png" alt="C" onerror="this.parentElement.textContent='C'">
+        </div>
+        <div class="login-badge">
+          <div class="login-badge-dot"></div>
+          Accès restreint
+        </div>
+        <div class="login-title">Convene Admin</div>
+        <div class="login-sub">Panneau d'administration sécurisé</div>
+      </div>
+
+      <div class="login-divider"></div>
+
+      <div id="login-error">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        <span id="login-error-text"></span>
+      </div>
+
+      <form id="login-form">
+        <div class="form-group">
+          <label class="form-label" for="email">Adresse email</label>
+          <input
+            class="form-input"
+            id="email"
+            type="email"
+            placeholder="admin@convene.io"
+            autocomplete="email"
+            required
+          >
+        </div>
+        <div class="form-group" style="margin-bottom:20px;">
+          <label class="form-label" for="password">Mot de passe</label>
+          <input
+            class="form-input"
+            id="password"
+            type="password"
+            placeholder="••••••••"
+            autocomplete="current-password"
+            required
+          >
+        </div>
+        <button type="submit" class="btn btn-primary login-submit" style="width:100%">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>
+          Se connecter
+        </button>
+      </form>
+
+      <div class="login-footer">
+        Convene &copy; 2026 · Accès réservé aux administrateurs
+      </div>
+    </div>
+  </div>
+
+  <script src="js/api.js"></script>
+  <script>
+    if (API.isLoggedIn()) window.location.href = '/admin/dashboard.html';
+
+    const form      = document.getElementById('login-form');
+    const errorEl   = document.getElementById('login-error');
+    const errorText = document.getElementById('login-error-text');
+    const submitBtn = form.querySelector('button[type="submit"]');
+
+    function showError(msg) {
+      errorText.textContent = msg;
+      errorEl.style.display = 'flex';
+    }
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      errorEl.style.display = 'none';
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = `
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="animation:spin .7s linear infinite;">
+          <path d="M21 12a9 9 0 1 1-6.219-8.56"/>
+        </svg>
+        Connexion…`;
+
+      const email    = document.getElementById('email').value.trim();
+      const password = document.getElementById('password').value;
+
+      try {
+        await API.login(email, password);
+        try {
+          await API.get('stats');
+          window.location.href = '/admin/dashboard.html';
+        } catch {
+          showError('Accès refusé : compte non administrateur');
+          await API.logout();
+        }
+      } catch (err) {
+        showError(err?.message || 'Identifiants invalides');
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = `
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/>
+            <polyline points="10 17 15 12 10 7"/>
+            <line x1="15" y1="12" x2="3" y2="12"/>
+          </svg>
+          Se connecter`;
+      }
+    });
+  </script>
+</body>
+</html>

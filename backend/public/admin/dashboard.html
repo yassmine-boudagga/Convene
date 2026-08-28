@@ -1,0 +1,1655 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Convene Admin Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/admin.css">
+
+  <style>
+    td .btn.btn-sm {
+      width: 32px !important;
+      height: 32px !important;
+      min-width: 32px !important;
+      padding: 0 !important;
+      border-radius: 8px !important;
+      font-size: 0 !important;
+      display: inline-flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      border-width: 1px !important;
+      box-shadow: none !important;
+      transition: all .15s ease !important;
+      vertical-align: middle !important;
+      line-height: 1 !important;
+    }
+
+    td .btn.btn-sm svg {
+      display: block !important;
+      width: 14px !important;
+      height: 14px !important;
+      flex-shrink: 0 !important;
+      pointer-events: none;
+    }
+
+    td:last-child {
+      white-space: nowrap;
+    }
+    td .btn + .btn {
+      margin-left: 5px;
+    }
+
+    td .btn.btn-secondary.btn-sm {
+      background: #F8FAFC !important;
+      color: #64748B !important;
+      border-color: #E2E8F0 !important;
+    }
+    td .btn.btn-secondary.btn-sm:hover {
+      background: #F1F5F9 !important;
+      color: #0F172A !important;
+      border-color: #0EA5E9 !important;
+      color: #0EA5E9 !important;
+      transform: translateY(-1px) !important;
+      box-shadow: 0 2px 6px rgba(14,165,233,.15) !important;
+    }
+
+    td .btn.btn-danger.btn-sm {
+      background: rgba(239,68,68,.07) !important;
+      color: #EF4444 !important;
+      border-color: rgba(239,68,68,.2) !important;
+    }
+    td .btn.btn-danger.btn-sm:hover {
+      background: #EF4444 !important;
+      color: #fff !important;
+      border-color: #EF4444 !important;
+      transform: translateY(-1px) !important;
+      box-shadow: 0 3px 10px rgba(239,68,68,.25) !important;
+    }
+
+    .stat-card:nth-child(1) .stat-icon-wrap { background: rgba(249,115,22,.1);  color: #F97316; }
+    .stat-card:nth-child(2) .stat-icon-wrap { background: rgba(14,165,233,.1);  color: #0EA5E9; }
+    .stat-card:nth-child(3) .stat-icon-wrap { background: rgba(139,92,246,.1);  color: #8B5CF6; }
+    .stat-card:nth-child(4) .stat-icon-wrap { background: rgba(34,197,94,.1);   color: #22C55E; }
+    .stat-card:nth-child(1) .stat-value { color: #F97316; }
+    .stat-card:nth-child(2) .stat-value { color: #0EA5E9; }
+    .stat-card:nth-child(3) .stat-value { color: #8B5CF6; }
+    .stat-card:nth-child(4) .stat-value { color: #22C55E; }
+
+    .modal-body .panel { overflow: hidden; border-radius: 12px !important; }
+
+    #page-content::-webkit-scrollbar { width: 5px; }
+    #page-content::-webkit-scrollbar-track { background: transparent; }
+    #page-content::-webkit-scrollbar-thumb { background: #CBD5E1; border-radius: 99px; }
+  </style>
+</head>
+<body>
+  <div class="chart-tooltip" id="chart-tooltip"></div>
+
+  <div class="shell">
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-logo">
+        <div class="logo-icon">
+          <img src="logo.png" alt="C" onerror="this.parentElement.textContent='C'">
+        </div>
+        <div>
+          <div class="logo-name">Convene</div>
+          <div class="logo-sub">Admin Console</div>
+        </div>
+      </div>
+
+      <nav class="sidebar-nav">
+        <a class="nav-item" href="#dashboard" data-view="dashboard">
+          <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="9"/><rect x="14" y="3" width="7" height="5"/><rect x="14" y="12" width="7" height="9"/><rect x="3" y="16" width="7" height="5"/></svg>
+          Dashboard
+        </a>
+        <a class="nav-item" href="#users" data-view="users">
+          <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          Utilisateurs
+        </a>
+        <a class="nav-item" href="#meetings" data-view="meetings">
+          <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+          Réunions
+        </a>
+        <a class="nav-item" href="#recordings" data-view="recordings">
+          <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>
+          Enregistrements
+        </a>
+        <a class="nav-item" href="#tasks" data-view="tasks">
+          <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+          Tâches
+        </a>
+        <a class="nav-item" href="#notifications" data-view="notifications">
+          <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+          Notifications
+        </a>
+        <a class="nav-item" href="#ai-results" data-view="ai-results">
+          <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 1 1 7.072 0l-.548.547A3.374 3.374 0 0 0 14 18.469V19a2 2 0 1 1-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/></svg>
+          Resumé IA
+        </a>
+        <a class="nav-item" href="#maintenance" data-view="maintenance">
+          <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+          Maintenance
+        </a>
+        <a class="nav-item" href="#system" data-view="system">
+          <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+          Logs système
+        </a>
+      </nav>
+
+      <div class="sidebar-footer">
+        <div class="admin-card" id="admin-info">
+          <div class="admin-avatar" id="sidebar-avatar">AD</div>
+          <div style="flex:1;min-width:0;">
+            <div class="admin-info-name" id="admin-name"></div>
+            <div class="admin-info-email" id="admin-email"></div>
+          </div>
+        </div>
+        <button class="btn btn-secondary btn-sm" style="width:100%;justify-content:center;" onclick="API.logout()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+          Déconnexion
+        </button>
+      </div>
+    </aside>
+
+    <div class="sidebar-overlay" id="sidebar-overlay"></div>
+
+    <main class="main">
+      <div class="topbar">
+        <button class="hamburger" id="hamburger">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+        </button>
+        <div class="topbar-title" id="page-title">Dashboard</div>
+        <div class="topbar-right">
+          <div class="topbar-clock" id="topbar-clock"></div>
+          <div class="topbar-avatar" id="topbar-avatar">AD</div>
+        </div>
+      </div>
+
+      <div id="page-content"></div>
+    </main>
+  </div>
+
+  <script src="js/api.js"></script>
+  <script src="js/components.js"></script>
+  <script src="js/router.js"></script>
+  <script>
+    // AUTH
+    if (!API.isLoggedIn()) window.location.href = '/admin/index.html';
+
+    // INIT USER INFO
+    const current = API.currentUser();
+    if (current?.email) {
+      const initials = (current.name || current.email).substring(0,2).toUpperCase();
+      document.getElementById('sidebar-avatar').textContent = initials;
+      document.getElementById('topbar-avatar').textContent  = initials;
+      document.getElementById('admin-email').textContent    = current.email;
+    }
+
+    function updateClock() {
+      const now = new Date();
+      const el = document.getElementById('topbar-clock');
+      if (el) el.textContent = now.toLocaleDateString('fr-FR',{weekday:'short',day:'2-digit',month:'short'}) + ' · ' + now.toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'});
+    }
+    setInterval(updateClock, 1000);
+    updateClock();
+
+    // SKELETON LOADER 
+    UI.showLoading = function(id) {
+      const el = document.getElementById(id);
+      if (!el) return;
+      el.innerHTML = `
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:16px;margin-bottom:24px;">
+          ${[0,1,2,3].map(()=>`<div class="skeleton" style="height:120px;border-radius:14px;"></div>`).join('')}
+        </div>
+        <div style="display:grid;grid-template-columns:3fr 2fr;gap:20px;margin-bottom:24px;">
+          <div class="skeleton" style="height:260px;border-radius:14px;"></div>
+          <div class="skeleton" style="height:260px;border-radius:14px;"></div>
+        </div>
+        <div class="skeleton" style="height:320px;border-radius:14px;"></div>`;
+    };
+
+    function animateCounter(el, end, duration = 900) {
+      if (el.dataset.animated === '1') return;
+      el.dataset.animated = '1';
+      let start = 0, startTs = null;
+      const step = (ts) => {
+        if (!startTs) startTs = ts;
+        const p = Math.min((ts - startTs) / duration, 1);
+        const ease = 1 - Math.pow(1 - p, 3);
+        el.textContent = Math.round(ease * end);
+        if (p < 1) requestAnimationFrame(step);
+        else el.textContent = end;
+      };
+      requestAnimationFrame(step);
+    }
+
+    const obs = new MutationObserver(() => {
+      document.querySelectorAll('.stat-value:not([data-animated="1"])').forEach(el => {
+        const n = parseInt(el.textContent, 10);
+        if (!isNaN(n)) animateCounter(el, n);
+      });
+    });
+    obs.observe(document.getElementById('page-content'), { childList: true, subtree: true });
+
+    function upgradeTableButtons() {
+      document.querySelectorAll('td .btn.btn-sm').forEach(btn => {
+        if (btn.dataset.upgraded) return; // skip already processed
+        const txt = btn.textContent.trim();
+        let svgInner = '', title = txt;
+
+        const icons = {
+          'Détail':     `<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>`,
+          'Modifier':   `<path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>`,
+          'Supprimer':  `<polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/>`,
+          'Force-end':  `<rect x="3" y="3" width="18" height="18" rx="2"/>`,
+        };
+
+        if (icons[txt]) {
+          svgInner = icons[txt];
+          title = txt;
+        }
+
+        if (svgInner) {
+          btn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:block;flex-shrink:0;pointer-events:none;">${svgInner}</svg>`;
+          btn.title = title;
+          btn.setAttribute('aria-label', title);
+          btn.dataset.upgraded = '1';
+        }
+      });
+    }
+
+    const obsTable = new MutationObserver(upgradeTableButtons);
+    obsTable.observe(document.getElementById('page-content'), { childList: true, subtree: true });
+
+    const sidebar = document.getElementById('sidebar');
+    const hamburger = document.getElementById('hamburger');
+    const overlay = document.getElementById('sidebar-overlay');
+    hamburger?.addEventListener('click', () => sidebar.classList.add('mobile-open'));
+    overlay?.addEventListener('click', () => sidebar.classList.remove('mobile-open'));
+
+    function formatDate(v) {
+      if (!v) return '—';
+      const d = new Date(v);
+      if (isNaN(d)) return String(v);
+      return d.toLocaleString('fr-FR');
+    }
+
+    function formatDateInput(v) {
+      if (!v) return '';
+      const d = new Date(v);
+      if (isNaN(d)) return '';
+      const p = n => String(n).padStart(2,'0');
+      return `${d.getFullYear()}-${p(d.getMonth()+1)}-${p(d.getDate())}T${p(d.getHours())}:${p(d.getMinutes())}`;
+    }
+
+    function formatDuration(s) {
+      if (s == null) return '—';
+      const n = Number(s);
+      if (isNaN(n)) return '—';
+      return `${Math.floor(n/60)}:${String(n%60).padStart(2,'0')}`;
+    }
+
+    function buildParams(params) {
+      const r = {};
+      Object.keys(params||{}).forEach(k => {
+        const v = params[k];
+        if (v !== undefined && v !== null && String(v).trim() !== '') r[k] = v;
+      });
+      return r;
+    }
+
+    const meetingStatusColors = {
+      scheduled: '#0EA5E9',
+      ongoing:   '#22C55E',
+      finished:  '#94A3B8',
+      cancelled: '#EF4444',
+      archived:  '#6B7280'
+    };
+
+    const priorityColors = {
+      high:   '#EF4444',
+      medium: '#F97316',
+      low:    '#0EA5E9'
+    };
+
+    const aiStatusColors = {
+      completed:            '#22C55E',
+      empty_audio:          '#0EA5E9',
+      failed:               '#EF4444',
+      transcription_failed: '#DC2626'
+    };
+
+    const tooltip = document.getElementById('chart-tooltip');
+    function showTooltip(e, text) {
+      tooltip.textContent = text;
+      tooltip.style.opacity = '1';
+      tooltip.style.left = (e.clientX + 12) + 'px';
+      tooltip.style.top  = (e.clientY - 32) + 'px';
+    }
+    function hideTooltip() { tooltip.style.opacity = '0'; }
+
+    const Charts = {
+      renderBarChart(containerId, data) {
+        const container = document.getElementById(containerId);
+        if (!container || !data.length) return;
+
+        const W = 520, H = 200, PAD = { t:20, r:16, b:44, l:36 };
+        const innerW = W - PAD.l - PAD.r;
+        const innerH = H - PAD.t - PAD.b;
+        const max = Math.max(...data.map(d=>d.value), 1);
+        const n = data.length;
+        const barW = Math.min((innerW / n) * 0.55, 48);
+        const gap  = innerW / n;
+
+        let yLabels = '';
+        [0, 0.5, 1].forEach(f => {
+          const y = PAD.t + innerH * (1 - f);
+          const val = Math.round(max * f);
+          yLabels += `<line x1="${PAD.l}" y1="${y}" x2="${W - PAD.r}" y2="${y}" stroke="#F1F5F9" stroke-width="1"/>`;
+          yLabels += `<text x="${PAD.l - 6}" y="${y + 4}" text-anchor="end" font-size="10" fill="#94A3B8">${val}</text>`;
+        });
+
+        let bars = '';
+        data.forEach((d, i) => {
+          const x = PAD.l + gap * i + (gap - barW) / 2;
+          const barH = Math.max((d.value / max) * innerH, d.value > 0 ? 4 : 0);
+          const y = PAD.t + innerH - barH;
+
+          bars += `<rect x="${x}" y="${PAD.t}" width="${barW}" height="${innerH}" rx="5" fill="#F8FAFC"/>`;
+
+          bars += `<rect class="chart-bar" x="${x}" y="${PAD.t + innerH}" width="${barW}" height="0" rx="5" fill="${d.color}"
+            style="transform-origin:bottom;transition:height .7s cubic-bezier(.4,0,.2,1) ${i*0.08}s, y .7s cubic-bezier(.4,0,.2,1) ${i*0.08}s;"
+            data-full-h="${barH}" data-full-y="${y}"
+            onmousemove="showTooltip(event,'${d.label}: ${d.value}')"
+            onmouseleave="hideTooltip()">
+          </rect>`;
+
+          if (d.value > 0) {
+            bars += `<text x="${x + barW/2}" y="${y - 5}" text-anchor="middle" font-size="11" font-weight="700" fill="${d.color}" opacity="0"
+              style="transition:opacity .3s ${i*0.08 + 0.6}s;" class="bar-label">${d.value}</text>`;
+          }
+
+          bars += `<text x="${x + barW/2}" y="${H - 8}" text-anchor="middle" font-size="10.5" fill="#94A3B8" font-weight="500">${d.label}</text>`;
+        });
+
+        container.innerHTML = `<svg viewBox="0 0 ${W} ${H}" class="svg-chart" style="width:100%;height:auto;">${yLabels}${bars}</svg>`;
+
+        requestAnimationFrame(() => {
+          requestAnimationFrame(() => {
+            container.querySelectorAll('.chart-bar').forEach(rect => {
+              const h = parseFloat(rect.dataset.fullH);
+              const y = parseFloat(rect.dataset.fullY);
+              rect.setAttribute('height', h);
+              rect.setAttribute('y', y);
+            });
+            container.querySelectorAll('.bar-label').forEach(t => {
+              t.setAttribute('opacity', '1');
+            });
+          });
+        });
+      },
+
+      renderDonutChart(containerId, data) {
+        const container = document.getElementById(containerId);
+        if (!container) return;
+
+        const total = data.reduce((a,d)=>a+d.value,0) || 1;
+        const CX=60, CY=60, R=45, STROKE=14;
+        const circumference = 2 * Math.PI * R;
+        let offset = 0;
+
+        let segments = '';
+        data.forEach((d, i) => {
+          const pct = d.value / total;
+          const dash = pct * circumference;
+          const gap  = circumference - dash;
+          const startOffset = circumference * (1 - offset) - circumference * pct;
+
+          segments += `
+            <circle cx="${CX}" cy="${CY}" r="${R}"
+              fill="none"
+              stroke="${d.color}"
+              stroke-width="${STROKE}"
+              stroke-linecap="round"
+              stroke-dasharray="${dash} ${gap}"
+              stroke-dashoffset="${circumference}"
+              style="transition: stroke-dashoffset .9s cubic-bezier(.4,0,.2,1) ${i*0.12}s; transform: rotate(-90deg); transform-origin: ${CX}px ${CY}px;"
+              data-target-offset="${startOffset}"
+              onmousemove="showTooltip(event,'${d.label}: ${d.value} (${Math.round(pct*100)}%)')"
+              onmouseleave="hideTooltip()"
+              class="chart-donut-segment"
+            />`;
+          offset += pct;
+        });
+        const centerSvg = `
+          <text x="${CX}" y="${CY - 6}" text-anchor="middle" font-size="20" font-weight="800" fill="#0F172A" style="font-family:'Sora',sans-serif;">${total}</text>
+          <text x="${CX}" y="${CY + 12}" text-anchor="middle" font-size="9" fill="#94A3B8" font-weight="600" letter-spacing=".05em">TOTAL</text>`;
+
+        const legend = data.map(d=>`
+          <div style="display:flex;align-items:center;gap:8px;padding:8px 12px;border-radius:10px;border:1px solid #F1F5F9;background:#FAFBFC;">
+            <div style="width:10px;height:10px;border-radius:50%;background:${d.color};flex-shrink:0;"></div>
+            <div>
+              <div style="font-size:12px;font-weight:600;color:#0F172A;">${d.label}</div>
+              <div style="font-size:11px;color:#94A3B8;">${d.value} · ${Math.round(d.value/total*100)}%</div>
+            </div>
+          </div>`).join('');
+
+        container.innerHTML = `
+          <div style="display:flex;align-items:center;gap:20px;flex-wrap:wrap;">
+            <svg viewBox="0 0 120 120" style="width:120px;height:120px;flex-shrink:0;">
+              <circle cx="${CX}" cy="${CY}" r="${R}" fill="none" stroke="#F1F5F9" stroke-width="${STROKE}"/>
+              ${segments}
+              ${centerSvg}
+            </svg>
+            <div style="display:flex;flex-direction:column;gap:8px;flex:1;">
+              ${legend}
+            </div>
+          </div>`;
+
+        requestAnimationFrame(() => {
+          requestAnimationFrame(() => {
+            container.querySelectorAll('.chart-donut-segment').forEach(seg => {
+              seg.style.strokeDashoffset = seg.dataset.targetOffset;
+            });
+          });
+        });
+      },
+      renderSparklines(containerId, data) {
+        const container = document.getElementById(containerId);
+        if (!container || !data.length) return;
+
+        container.innerHTML = data.map(d => {
+          const pct = d.total > 0 ? Math.round(d.value / d.total * 100) : 0;
+          return `
+            <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid #F1F5F9;">
+              <div style="display:flex;align-items:center;gap:10px;min-width:120px;">
+                <div style="width:8px;height:8px;border-radius:50%;background:${d.color};flex-shrink:0;"></div>
+                <span style="font-size:13px;font-weight:500;color:#475569;text-transform:capitalize;">${d.label}</span>
+              </div>
+              <div style="flex:1;margin:0 16px;">
+                <div style="height:5px;background:#F1F5F9;border-radius:99px;overflow:hidden;">
+                  <div style="height:100%;width:0%;background:${d.color};border-radius:99px;transition:width .8s cubic-bezier(.4,0,.2,1) .2s;" class="prog-fill" data-w="${pct}"></div>
+                </div>
+              </div>
+              <div style="display:flex;align-items:center;gap:8px;">
+                <span style="font-size:13px;font-weight:700;color:#0F172A;min-width:24px;text-align:right;">${d.value}</span>
+                <span style="font-size:11px;color:#94A3B8;min-width:36px;">${pct}%</span>
+              </div>
+            </div>`;
+        }).join('');
+
+        requestAnimationFrame(()=>requestAnimationFrame(()=>{
+          container.querySelectorAll('.prog-fill').forEach(el=>{
+            el.style.width = el.dataset.w + '%';
+          });
+        }));
+      }
+    };
+    async function openMeetingDetailModal(meetingId) {
+      try {
+        const resp = await API.get('meetings/' + meetingId + '/detail');
+        const d = resp?.data;
+        if (!d?.meeting) { UI.toast('Réunion introuvable', 'error'); return; }
+        const m = d.meeting, rec = d.recording, ai = d.aiResult, tasks = d.tasks || [];
+        const creator = m.createdBy || {};
+
+        const attended = (m.attendedBy || []).map(a => {
+          if (a && typeof a === 'object') return `<div style="padding:4px 0;border-bottom:1px solid var(--border);font-size:13px;">${a.name||'—'} <span style="color:var(--text-muted);font-size:11px;">${a.email||''}</span></div>`;
+          return `<div style="padding:4px 0;">${String(a)}</div>`;
+        }).join('');
+
+        const notes = (m.notes || []).map(n => {
+          const auth = n.userId || {};
+          return `<div style="padding:7px 0;border-bottom:1px solid var(--border);">
+            <div style="font-size:11px;color:var(--text-muted);margin-bottom:3px;">${auth.name||'—'} · ${formatDate(n.timestamp)}</div>
+            <div style="font-size:13px;">${n.content||''}</div>
+          </div>`;
+        }).join('');
+
+        const recSection = rec
+          ? `<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+              <div><div style="font-size:11px;color:var(--text-muted);">Statut</div>${UI.renderBadge(rec.recordingStatus||'—',{})}</div>
+              <div><div style="font-size:11px;color:var(--text-muted);">Source</div><strong>${rec.source||'—'}</strong></div>
+              <div><div style="font-size:11px;color:var(--text-muted);">Durée</div><strong>${formatDuration(rec.recordingDuration)}</strong></div>
+            </div>`
+          : '<span style="color:var(--text-muted);font-size:13px;">Aucun enregistrement</span>';
+
+        const aiSection = ai
+          ? `<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+              <div><div style="font-size:11px;color:var(--text-muted);">Pipeline</div>${UI.renderBadge(ai.pipelineStatus||'—',aiStatusColors)}</div>
+              <div><div style="font-size:11px;color:var(--text-muted);">Durée transcript</div><strong>${formatDuration(ai.transcript?.durationSeconds)}</strong></div>
+              <div><div style="font-size:11px;color:var(--text-muted);">Key Points</div><strong>${(ai.summary?.keyPoints||[]).length}</strong></div>
+              <div><div style="font-size:11px;color:var(--text-muted);">Action Items</div><strong>${(ai.summary?.actionItems||[]).length}</strong></div>
+            </div>`
+          : '<span style="color:var(--text-muted);font-size:13px;">Pas de résultat IA</span>';
+
+        const tasksTable = tasks.length > 0
+          ? `<table style="width:100%;font-size:13px;"><thead><tr><th>Titre</th><th>Priorité</th><th>Statut</th><th>Assigné</th></tr></thead>
+              <tbody>${tasks.map(t=>`<tr><td>${t.title||'—'}</td><td>${UI.renderBadge(t.priority||'—',priorityColors)}</td><td>${t.status||'—'}</td><td>${t.assigneeId?.name||'—'}</td></tr>`).join('')}</tbody></table>`
+          : '<span style="color:var(--text-muted);font-size:13px;">Aucune tâche</span>';
+
+        UI.modal({
+          title: '📋 Détail réunion',
+          bodyHTML: `
+            <div class="panel" style="margin-bottom:12px;">
+              <div class="panel-head">Informations générales</div>
+              <div class="panel-body" style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+                <div><div style="font-size:11px;color:var(--text-muted);font-weight:600;text-transform:uppercase;letter-spacing:.06em;">Titre</div><div style="font-weight:600;margin-top:3px;">${m.title||'—'}</div></div>
+                <div><div style="font-size:11px;color:var(--text-muted);font-weight:600;text-transform:uppercase;letter-spacing:.06em;">Type</div><div style="margin-top:3px;">${m.meetingType||'—'}</div></div>
+                <div><div style="font-size:11px;color:var(--text-muted);font-weight:600;text-transform:uppercase;letter-spacing:.06em;">Statut</div><div style="margin-top:3px;">${UI.renderBadge(m.status||'—',meetingStatusColors)}</div></div>
+                <div><div style="font-size:11px;color:var(--text-muted);font-weight:600;text-transform:uppercase;letter-spacing:.06em;">Début</div><div style="margin-top:3px;">${formatDate(m.startTime)}</div></div>
+                <div><div style="font-size:11px;color:var(--text-muted);font-weight:600;text-transform:uppercase;letter-spacing:.06em;">Durée</div><div style="margin-top:3px;">${m.duration ? m.duration+' min' : '—'}</div></div>
+                <div><div style="font-size:11px;color:var(--text-muted);font-weight:600;text-transform:uppercase;letter-spacing:.06em;">Créateur</div><div style="margin-top:3px;">${creator.name||'—'}</div></div>
+              </div>
+            </div>
+            <div class="panel" style="margin-bottom:12px;"><div class="panel-head">Participants</div><div class="panel-body">${attended||'<span style="color:var(--text-muted);">Aucun</span>'}</div></div>
+            <div class="panel" style="margin-bottom:12px;"><div class="panel-head">Notes</div><div class="panel-body">${notes||'<span style="color:var(--text-muted);">Aucune note</span>'}</div></div>
+            <div class="panel" style="margin-bottom:12px;"><div class="panel-head">Enregistrement</div><div class="panel-body">${recSection}</div></div>
+            <div class="panel" style="margin-bottom:12px;"><div class="panel-head">Pipeline IA</div><div class="panel-body">${aiSection}</div></div>
+            <div class="panel"><div class="panel-head">Tâches</div><div class="panel-body">${tasksTable}</div></div>
+          `,
+          confirmLabel: 'Fermer',
+          hideCancel: true,
+          onConfirm: async () => {}
+        });
+      } catch(err) { UI.toast(err?.message||'Erreur chargement détail','error'); }
+    }
+
+    window.renderDashboard = async function(period='week', from, to) {
+      UI.showLoading('page-content');
+      try {
+        const params = { period };
+        if (period === 'custom' && from && to) { params.from = from; params.to = to; }
+
+        const [statsResp, meetingsResp] = await Promise.all([
+          API.get('stats/period', params),
+          API.get('meetings', { limit: 5 })
+        ]);
+
+        const stats    = statsResp?.data || {};
+        const meetings = meetingsResp?.data || [];
+        const byStatus = stats.meetings?.byStatus || {};
+        const byType   = stats.meetings?.byType   || {};
+
+        document.getElementById('page-content').innerHTML = `
+          <!-- PERIOD SELECTOR -->
+          <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:24px;">
+            <div class="period-bar">
+              <button class="btn period-btn ${period==='week'?'active':''}" data-period="week">7 jours</button>
+              <button class="btn period-btn ${period==='month'?'active':''}" data-period="month">30 jours</button>
+              <button class="btn period-btn ${period==='custom'?'active':''}" data-period="custom">Personnalisé</button>
+            </div>
+            <div id="custom-range" class="date-range" style="display:${period==='custom'?'flex':'none'};">
+              <input type="date" id="stat-from" value="${from||''}">
+              <span>→</span>
+              <input type="date" id="stat-to" value="${to||''}">
+              <button class="btn btn-primary btn-sm" id="apply-custom">Appliquer</button>
+            </div>
+          </div>
+
+          <!-- STAT CARDS -->
+          <div class="grid-4">
+            <div class="stat-card">
+              <div class="stat-card-top">
+                <div class="stat-icon-wrap">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                </div>
+              </div>
+              <div class="stat-label">Nouveaux utilisateurs</div>
+              <div class="stat-value">${stats.users?.new??0}</div>
+              <div class="stat-sub">Inscriptions · période</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-card-top">
+                <div class="stat-icon-wrap">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                </div>
+              </div>
+              <div class="stat-label">Réunions créées</div>
+              <div class="stat-value">${stats.meetings?.total??0}</div>
+              <div class="stat-sub">${byType.online||0} en ligne · ${byType.physical||0} physiques</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-card-top">
+                <div class="stat-icon-wrap">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/></svg>
+                </div>
+              </div>
+              <div class="stat-label">Enregistrements</div>
+              <div class="stat-value">${stats.recordings?.total??0}</div>
+              <div class="stat-sub">Fichiers stockés</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-card-top">
+                <div class="stat-icon-wrap">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+                </div>
+              </div>
+              <div class="stat-label">Tâches générées</div>
+              <div class="stat-value">${stats.tasks?.total??0}</div>
+              <div class="stat-sub">Sur la période</div>
+            </div>
+          </div>
+
+          <!-- CHARTS ROW -->
+          <div class="dashboard-grid">
+            <!-- Bar Chart -->
+            <div class="chart-card">
+              <div class="chart-header">
+                <div>
+                  <div class="chart-title">Réunions par statut</div>
+                  <div class="chart-subtitle">Distribution sur la période sélectionnée</div>
+                </div>
+              </div>
+              <div id="status-chart-container"></div>
+              <div class="chart-legend" id="status-legend"></div>
+            </div>
+
+            <!-- Donut Chart -->
+            <div class="chart-card">
+              <div class="chart-header">
+                <div>
+                  <div class="chart-title">Types de réunions</div>
+                  <div class="chart-subtitle">En ligne vs physique</div>
+                </div>
+              </div>
+              <div id="type-chart-container" style="margin-top:8px;"></div>
+            </div>
+          </div>
+
+          <!-- STATUS BREAKDOWN (sparklines) -->
+          <div class="chart-card" style="margin-top:20px;">
+            <div class="chart-header" style="margin-bottom:0;">
+              <div>
+                <div class="chart-title">Répartition détaillée</div>
+                <div class="chart-subtitle">Progression par statut</div>
+              </div>
+            </div>
+            <div id="sparklines-container" style="margin-top:4px;"></div>
+          </div>
+
+          <!-- RECENT MEETINGS TABLE -->
+          <div class="panel" style="margin-top:20px;">
+            <div class="panel-head">
+              5 Dernières Réunions
+              <span style="font-size:11.5px;font-weight:500;color:var(--text-muted);">Vue rapide</span>
+            </div>
+            <div id="dash-meetings"></div>
+          </div>
+        `;
+
+        document.querySelectorAll('.period-btn').forEach(btn => {
+          btn.addEventListener('click', () => {
+            document.querySelectorAll('.period-btn').forEach(b=>b.classList.remove('active'));
+            btn.classList.add('active');
+            const p = btn.dataset.period;
+            document.getElementById('custom-range').style.display = p==='custom' ? 'flex' : 'none';
+            if (p !== 'custom') renderDashboard(p);
+          });
+        });
+
+        document.getElementById('apply-custom')?.addEventListener('click', () => {
+          const f = document.getElementById('stat-from').value;
+          const t = document.getElementById('stat-to').value;
+          if (!f||!t) return UI.toast('Sélectionnez les deux dates','error');
+          renderDashboard('custom',f,t);
+        });
+
+        const totalMeetings = Object.values(byStatus).reduce((a,b)=>a+b,0) || 1;
+        const barData = Object.entries(meetingStatusColors).map(([s,c])=>({label:s, value:byStatus[s]||0, color:c}));
+        Charts.renderBarChart('status-chart-container', barData);
+
+        const legendEl = document.getElementById('status-legend');
+        if (legendEl) {
+          legendEl.innerHTML = barData.map(d=>`
+            <div class="legend-item">
+              <div class="legend-dot" style="background:${d.color};"></div>
+              <span>${d.label} <strong style="color:var(--text-primary);">${d.value}</strong></span>
+            </div>`).join('');
+        }
+
+        const donutData = [
+          {label:'En ligne',  value:byType.online||0,   color:'#F97316'},
+          {label:'Physique',  value:byType.physical||0, color:'#22C55E'}
+        ];
+        Charts.renderDonutChart('type-chart-container', donutData);
+
+        const sparkData = barData.map(d=>({...d, total: totalMeetings}));
+        Charts.renderSparklines('sparklines-container', sparkData);
+
+        UI.renderTable('dash-meetings', [
+          {key:'title',       label:'Titre'},
+          {key:'status',      label:'Statut',      render:v=>UI.renderBadge(v,meetingStatusColors)},
+          {key:'meetingType', label:'Type'},
+          {key:'startTime',   label:'Date',        render:v=>formatDate(v)}
+        ], meetings, [
+          {label:'Détail', class:'btn-secondary btn-sm', onClick:row=>openMeetingDetailModal(row._id)}
+        ]);
+
+      } catch(err) { UI.toast(err?.message||'Erreur dashboard','error'); }
+    };
+
+    window.renderUsers = function() {
+      let page = 1, filters = {};
+
+      async function load(p, f) {
+        page = p; filters = f||{};
+        UI.showLoading('page-content');
+        try {
+          const resp = await API.get('users', buildParams({page:p, limit:20, ...f}));
+          const users = resp?.data||[], pag = resp?.pagination||{total:0,page:1,limit:20,pages:0};
+
+          document.getElementById('page-content').innerHTML = `
+            <div class="filter-bar">
+              <div class="filter-group">
+                <div class="filter-label">Recherche</div>
+                <input class="form-input search-input" id="user-search" placeholder="Nom ou email…" value="${f.search||''}">
+              </div>
+              <div class="filter-group">
+                <div class="filter-label">Inscrit du</div>
+                <input type="date" id="user-from" class="form-input" value="${f.fromDate||''}">
+              </div>
+              <div class="filter-group">
+                <div class="filter-label">Au</div>
+                <input type="date" id="user-to" class="form-input" value="${f.toDate||''}">
+              </div>
+              <div class="filter-actions">
+                <button class="btn btn-primary" id="user-filter-btn">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>
+                  Filtrer
+                </button>
+              </div>
+            </div>
+            <div class="panel">
+              <div id="users-table"></div>
+            </div>
+            <div id="users-pagination"></div>`;
+
+          UI.renderTable('users-table', [
+            {key:'name',      label:'Nom'},
+            {key:'email',     label:'Email'},
+            {key:'createdAt', label:'Inscription', render:v=>formatDate(v)}
+          ], users, [
+            {label:'Modifier',  class:'btn-secondary btn-sm', onClick:row=>openEditUserModal(row)},
+            {label:'Supprimer', class:'btn-danger btn-sm',    onClick:row=>deleteUser(row)}
+          ]);
+          UI.renderPagination('users-pagination', pag, p=>load(p,filters));
+
+          document.getElementById('user-filter-btn').addEventListener('click',()=>load(1,{
+            search:   document.getElementById('user-search').value.trim(),
+            fromDate: document.getElementById('user-from').value,
+            toDate:   document.getElementById('user-to').value
+          }));
+        } catch(err) { UI.toast(err?.message||'Erreur utilisateurs','error'); }
+      }
+
+      function openEditUserModal(user) {
+        UI.modal({
+          title:'Modifier utilisateur',
+          bodyHTML:`
+            <div class="form-group"><label class="form-label">Nom</label><input class="form-input" id="eu-name" value="${user.name||''}"></div>
+            <div class="form-group"><label class="form-label">Email</label><input class="form-input" id="eu-email" value="${user.email||''}"></div>
+            <div class="form-group"><label class="form-label">Bio</label><input class="form-input" id="eu-bio" value="${user.bio||''}"></div>
+            <div class="form-group"><label class="form-label">Poste</label><input class="form-input" id="eu-job" value="${user.jobTitle||''}"></div>
+            <div class="form-group"><label class="form-label">Société</label><input class="form-input" id="eu-company" value="${user.company||''}"></div>`,
+          confirmLabel:'Enregistrer',
+          onConfirm:async()=>{
+            await API.put(`users/${user._id}`,{
+              name:     document.getElementById('eu-name').value.trim(),
+              email:    document.getElementById('eu-email').value.trim(),
+              bio:      document.getElementById('eu-bio').value.trim(),
+              jobTitle: document.getElementById('eu-job').value.trim(),
+              company:  document.getElementById('eu-company').value.trim()
+            });
+            UI.toast('Utilisateur modifié','success'); load(page,filters);
+          }
+        });
+      }
+
+      function deleteUser(user) {
+        if (API.currentUser()?.email === user.email) { UI.toast('Impossible de supprimer votre compte','error'); return; }
+        UI.modal({
+          title:'Supprimer utilisateur',
+          bodyHTML:`<p>Confirmer la suppression de <strong>${user.name||user.email}</strong> ?<br><span style="color:var(--text-muted);font-size:13px;">Ses réunions seront annulées.</span></p>`,
+          confirmLabel:'Supprimer', dangerConfirm:true,
+          onConfirm:async()=>{ await API.delete(`users/${user._id}`); UI.toast('Utilisateur supprimé','success'); load(page,filters); }
+        });
+      }
+
+      load(1,{});
+    };
+  
+    window.renderMeetings = function() {
+      let page = 1, filters = {};
+
+      async function load(p, f) {
+        page = p; filters = f||{};
+        UI.showLoading('page-content');
+        try {
+          const resp = await API.get('meetings', buildParams({page:p,limit:20,...f}));
+          const meetings = resp?.data||[], pag = resp?.pagination||{total:0,page:1,limit:20,pages:0};
+
+          document.getElementById('page-content').innerHTML = `
+            <div class="filter-bar">
+              <div class="filter-group">
+                <div class="filter-label">Recherche</div>
+                <input class="form-input search-input" id="m-search" placeholder="Titre…" value="${f.search||''}">
+              </div>
+              <div class="filter-group">
+                <div class="filter-label">Statut</div>
+                <select class="form-select" id="m-status">
+                  <option value="">Tous</option>
+                  ${['scheduled','ongoing','finished','cancelled','archived'].map(s=>`<option value="${s}" ${f.status===s?'selected':''}>${s}</option>`).join('')}
+                </select>
+              </div>
+              <div class="filter-group">
+                <div class="filter-label">Type</div>
+                <select class="form-select" id="m-type">
+                  <option value="">Tous</option>
+                  <option value="online" ${f.type==='online'?'selected':''}>En ligne</option>
+                  <option value="physical" ${f.type==='physical'?'selected':''}>Physique</option>
+                </select>
+              </div>
+              <div class="filter-group">
+                <div class="filter-label">Du</div>
+                <input type="date" id="m-from" class="form-input" value="${f.fromDate||''}">
+              </div>
+              <div class="filter-group">
+                <div class="filter-label">Au</div>
+                <input type="date" id="m-to" class="form-input" value="${f.toDate||''}">
+              </div>
+              <div class="filter-actions">
+                <button class="btn btn-primary" id="m-filter-btn">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>
+                  Filtrer
+                </button>
+              </div>
+            </div>
+            <div class="panel">
+              <div id="meetings-table"></div>
+            </div>
+            <div id="meetings-pagination"></div>`;
+
+          UI.renderTable('meetings-table', [
+            {key:'title',       label:'Titre'},
+            {key:'meetingType', label:'Type'},
+            {key:'status',      label:'Statut',   render:v=>UI.renderBadge(v,meetingStatusColors)},
+            {key:'createdBy',   label:'Créateur', render:v=>v?`${v.name||''} <span style="color:var(--text-muted);font-size:11px;">${v.email||''}</span>`:'—'},
+            {key:'startTime',   label:'Début',    render:v=>formatDate(v)},
+            {key:'duration',    label:'Durée',    render:v=>v?`${v} min`:'—'}
+          ], meetings, [
+            {label:'Détail',    class:'btn-secondary btn-sm', onClick:row=>openMeetingDetailModal(row._id)},
+            {label:'Modifier',  class:'btn-secondary btn-sm', onClick:row=>openEditMeetingModal(row)},
+            {label:'Supprimer', class:'btn-danger btn-sm',    onClick:row=>deleteMeeting(row)}
+          ]);
+
+          const tableEl = document.querySelector('#meetings-table table');
+          if (tableEl) {
+            tableEl.querySelectorAll('tbody tr').forEach((rowEl,idx)=>{
+              if (meetings[idx]?.status === 'ongoing') {
+                const btn = document.createElement('button');
+                btn.className = 'btn btn-danger btn-sm';
+                btn.title = 'Force-end';
+                btn.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/></svg>`;
+                btn.addEventListener('click', ()=>forceEndMeeting(meetings[idx]));
+                rowEl.lastElementChild.appendChild(btn);
+              }
+            });
+          }
+
+          UI.renderPagination('meetings-pagination', pag, p=>load(p,filters));
+          document.getElementById('m-filter-btn').addEventListener('click',()=>load(1,{
+            search:   document.getElementById('m-search').value.trim(),
+            status:   document.getElementById('m-status').value,
+            type:     document.getElementById('m-type').value,
+            fromDate: document.getElementById('m-from').value,
+            toDate:   document.getElementById('m-to').value
+          }));
+        } catch(err) { UI.toast(err?.message||'Erreur réunions','error'); }
+      }
+
+      function openEditMeetingModal(m) {
+        UI.modal({
+          title:'Modifier réunion',
+          bodyHTML:`
+            <div class="form-group"><label class="form-label">Titre</label><input class="form-input" id="em-title" value="${m.title||''}"></div>
+            <div class="form-group"><label class="form-label">Description</label><input class="form-input" id="em-desc" value="${m.description||''}"></div>
+            <div class="form-group"><label class="form-label">Début</label><input class="form-input" id="em-start" type="datetime-local" value="${formatDateInput(m.startTime)}"></div>
+            <div class="form-group"><label class="form-label">Durée (min)</label><input class="form-input" id="em-duration" type="number" value="${m.duration||''}"></div>
+            <div class="form-group"><label class="form-label">Lieu</label><input class="form-input" id="em-loc" value="${m.location||''}"></div>
+            <div class="form-group"><label class="form-label">Statut</label>
+              <select class="form-select" id="em-status">
+                ${['scheduled','ongoing','finished','cancelled','archived'].map(s=>`<option value="${s}" ${m.status===s?'selected':''}>${s}</option>`).join('')}
+              </select>
+            </div>`,
+          confirmLabel:'Enregistrer',
+          onConfirm:async()=>{
+            await API.put(`meetings/${m._id}`,{
+              title:       document.getElementById('em-title').value.trim(),
+              description: document.getElementById('em-desc').value.trim(),
+              startTime:   document.getElementById('em-start').value,
+              duration:    Number(document.getElementById('em-duration').value),
+              location:    document.getElementById('em-loc').value.trim(),
+              status:      document.getElementById('em-status').value
+            });
+            UI.toast('Réunion modifiée','success'); load(page,filters);
+          }
+        });
+      }
+
+      function deleteMeeting(m) {
+        UI.modal({
+          title:'Supprimer réunion',
+          bodyHTML:`<p>Supprimer <strong>${m.title}</strong> et toutes les données associées ?</p>`,
+          confirmLabel:'Supprimer', dangerConfirm:true,
+          onConfirm:async()=>{ await API.delete(`meetings/${m._id}`); UI.toast('Réunion supprimée','success'); load(page,filters); }
+        });
+      }
+
+      function forceEndMeeting(m) {
+        UI.modal({
+          title:'Force-end',
+          bodyHTML:`<p>Forcer la fin de <strong>${m.title}</strong> ?</p>`,
+          confirmLabel:'Forcer', dangerConfirm:true,
+          onConfirm:async()=>{ await API.post(`meetings/${m._id}/force-end`); UI.toast('Réunion terminée','success'); load(page,filters); }
+        });
+      }
+
+      load(1,{});
+    };
+
+    window.renderRecordings = function() {
+      let page = 1, filters = {};
+
+      async function load(p, f) {
+        page = p; filters = f||{};
+        UI.showLoading('page-content');
+        try {
+          const resp = await API.get('recordings', buildParams({page:p,limit:20,...f}));
+          const items = resp?.data||[], pag = resp?.pagination||{};
+
+          document.getElementById('page-content').innerHTML = `
+            <div class="filter-bar">
+              <div class="filter-group">
+                <div class="filter-label">Statut</div>
+                <select class="form-select" id="r-status">
+                  <option value="">Tous</option>
+                  ${['recording','processing','available','failed'].map(s=>`<option value="${s}" ${f.status===s?'selected':''}>${s}</option>`).join('')}
+                </select>
+              </div>
+              <div class="filter-group">
+                <div class="filter-label">Source</div>
+                <select class="form-select" id="r-source">
+                  <option value="">Toutes</option>
+                  <option value="livekit" ${f.source==='livekit'?'selected':''}>LiveKit</option>
+                  <option value="physical_upload" ${f.source==='physical_upload'?'selected':''}>Upload physique</option>
+                </select>
+              </div>
+              <div class="filter-group">
+                <div class="filter-label">Du</div>
+                <input type="date" id="r-from" class="form-input" value="${f.fromDate||''}">
+              </div>
+              <div class="filter-group">
+                <div class="filter-label">Au</div>
+                <input type="date" id="r-to" class="form-input" value="${f.toDate||''}">
+              </div>
+              <div class="filter-actions">
+                <button class="btn btn-primary" id="r-filter-btn">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>
+                  Filtrer
+                </button>
+              </div>
+            </div>
+            <div class="panel"><div id="recordings-table"></div></div>
+            <div id="recordings-pagination"></div>`;
+
+          document.getElementById('r-status').value = f.status||'';
+          document.getElementById('r-source').value = f.source||'';
+
+          UI.renderTable('recordings-table',[
+            {key:'meetingId',        label:'Réunion',  render:v=>v?.title||v||'—'},
+            {key:'source',           label:'Source'},
+            {key:'recordingStatus',  label:'Statut'},
+            {key:'recordingDuration',label:'Durée',   render:v=>formatDuration(v)},
+            {key:'createdAt',        label:'Date',    render:v=>formatDate(v)}
+          ], items, [
+            {label:'Supprimer', class:'btn-danger btn-sm', onClick:row=>deleteRecording(row)}
+          ]);
+          UI.renderPagination('recordings-pagination', pag, p=>load(p,filters));
+          document.getElementById('r-filter-btn').addEventListener('click',()=>load(1,{
+            status:   document.getElementById('r-status').value,
+            source:   document.getElementById('r-source').value,
+            fromDate: document.getElementById('r-from').value,
+            toDate:   document.getElementById('r-to').value
+          }));
+        } catch(err) { UI.toast(err?.message||'Erreur recordings','error'); }
+      }
+
+      function deleteRecording(r) {
+        UI.modal({
+          title:'Supprimer enregistrement',
+          bodyHTML:`<p>Supprimer l'enregistrement de <strong>${r.meetingId?.title||r.meetingId||'—'}</strong> ?</p>`,
+          confirmLabel:'Supprimer', dangerConfirm:true,
+          onConfirm:async()=>{ await API.delete(`recordings/${r.meetingId}`); UI.toast('Enregistrement supprimé','success'); load(page,filters); }
+        });
+      }
+      load(1,{});
+    };
+
+    window.renderTasks = function() {
+      let page = 1, filters = {};
+
+      async function load(p, f) {
+        page = p; filters = f||{};
+        UI.showLoading('page-content');
+        try {
+          const resp = await API.get('tasks', buildParams({page:p,limit:20,...f}));
+          const items = resp?.data||[], pag = resp?.pagination||{};
+
+          document.getElementById('page-content').innerHTML = `
+            <div class="filter-bar">
+              <div class="filter-group">
+                <div class="filter-label">Statut</div>
+                <select class="form-select" id="t-status">
+                  <option value="">Tous</option>
+                  ${['todo','completed','archived'].map(s=>`<option value="${s}" ${f.status===s?'selected':''}>${s}</option>`).join('')}
+                </select>
+              </div>
+              <div class="filter-group">
+                <div class="filter-label">Source</div>
+                <select class="form-select" id="t-source">
+                  <option value="">Toutes</option>
+                  <option value="manual" ${f.source==='manual'?'selected':''}>Manuel</option>
+                  <option value="ai_summary" ${f.source==='ai_summary'?'selected':''}>IA</option>
+                </select>
+              </div>
+              <div class="filter-group">
+                <div class="filter-label">Du</div>
+                <input type="date" id="t-from" class="form-input" value="${f.fromDate||''}">
+              </div>
+              <div class="filter-group">
+                <div class="filter-label">Au</div>
+                <input type="date" id="t-to" class="form-input" value="${f.toDate||''}">
+              </div>
+              <div class="filter-actions">
+                <button class="btn btn-primary" id="t-filter-btn">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>
+                  Filtrer
+                </button>
+              </div>
+            </div>
+            <div class="panel"><div id="tasks-table"></div></div>
+            <div id="tasks-pagination"></div>`;
+
+          document.getElementById('t-status').value = f.status||'';
+          document.getElementById('t-source').value = f.source||'';
+
+          UI.renderTable('tasks-table',[
+            {key:'title',      label:'Titre'},
+            {key:'meetingId',  label:'Réunion',   render:v=>v?.title||v||'—'},
+            {key:'assigneeId', label:'Assigné',   render:v=>v?.name||'—'},
+            {key:'priority',   label:'Priorité',  render:v=>UI.renderBadge(v||'—',priorityColors)},
+            {key:'dueDate',    label:'Échéance',  render:v=>formatDate(v)},
+            {key:'status',     label:'Statut'}
+          ], items, [
+            {label:'Modifier',  class:'btn-secondary btn-sm', onClick:row=>openEditTaskModal(row)},
+            {label:'Supprimer', class:'btn-danger btn-sm',    onClick:row=>deleteTask(row)}
+          ]);
+          UI.renderPagination('tasks-pagination', pag, p=>load(p,filters));
+          document.getElementById('t-filter-btn').addEventListener('click',()=>load(1,{
+            status:   document.getElementById('t-status').value,
+            source:   document.getElementById('t-source').value,
+            fromDate: document.getElementById('t-from').value,
+            toDate:   document.getElementById('t-to').value
+          }));
+        } catch(err) { UI.toast(err?.message||'Erreur tâches','error'); }
+      }
+
+      function openEditTaskModal(task) {
+        UI.modal({
+          title:'Modifier tâche',
+          bodyHTML:`
+            <div class="form-group"><label class="form-label">Titre</label><input class="form-input" id="et-title" value="${task.title||''}"></div>
+            <div class="form-group"><label class="form-label">Priorité</label>
+              <select class="form-select" id="et-priority">
+                ${['low','medium','high'].map(p=>`<option value="${p}" ${task.priority===p?'selected':''}>${p}</option>`).join('')}
+              </select>
+            </div>
+            <div class="form-group"><label class="form-label">Échéance</label><input class="form-input" id="et-due" type="datetime-local" value="${formatDateInput(task.dueDate)}"></div>
+            <div class="form-group"><label class="form-label">Statut</label>
+              <select class="form-select" id="et-status">
+                ${['todo','completed','archived'].map(s=>`<option value="${s}" ${task.status===s?'selected':''}>${s}</option>`).join('')}
+              </select>
+            </div>`,
+          confirmLabel:'Enregistrer',
+          onConfirm:async()=>{
+            await API.put(`tasks/${task._id}`,{
+              title:    document.getElementById('et-title').value.trim(),
+              priority: document.getElementById('et-priority').value,
+              dueDate:  document.getElementById('et-due').value||null,
+              status:   document.getElementById('et-status').value
+            });
+            UI.toast('Tâche modifiée','success'); load(page,filters);
+          }
+        });
+      }
+
+      function deleteTask(t) {
+        UI.modal({
+          title:'Supprimer tâche',
+          bodyHTML:`<p>Supprimer <strong>${t.title}</strong> ?</p>`,
+          confirmLabel:'Supprimer', dangerConfirm:true,
+          onConfirm:async()=>{ await API.delete(`tasks/${t._id}`); UI.toast('Tâche supprimée','success'); load(page,filters); }
+        });
+      }
+      load(1,{});
+    };
+
+    window.renderNotifications = function() {
+      let page = 1, filters = {};
+
+      async function load(p, f) {
+        page = p; filters = f||{};
+        UI.showLoading('page-content');
+        try {
+          const resp = await API.get('notifications', buildParams({page:p,limit:20,...f}));
+          const items = resp?.data||[], pag = resp?.pagination||{};
+
+          document.getElementById('page-content').innerHTML = `
+            <div class="filter-bar">
+              <div class="filter-group">
+                <div class="filter-label">Type</div>
+                <input class="form-input" id="n-type" placeholder="Filtrer par type…" value="${f.type||''}">
+              </div>
+              <div class="filter-group">
+                <div class="filter-label">UserId</div>
+                <input class="form-input" id="n-user" placeholder="UserId…" value="${f.userId||''}">
+              </div>
+              <div class="filter-group">
+                <div class="filter-label">Du</div>
+                <input type="date" id="n-from" class="form-input" value="${f.fromDate||''}">
+              </div>
+              <div class="filter-group">
+                <div class="filter-label">Au</div>
+                <input type="date" id="n-to" class="form-input" value="${f.toDate||''}">
+              </div>
+              <div class="filter-actions">
+                <button class="btn btn-primary" id="n-filter-btn">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>
+                  Filtrer
+                </button>
+              </div>
+            </div>
+            <div class="panel"><div id="notifications-table"></div></div>
+            <div id="notifications-pagination"></div>`;
+
+          UI.renderTable('notifications-table',[
+            {key:'type',        label:'Type'},
+            {key:'title',       label:'Titre'},
+            {key:'userId',      label:'Utilisateur', render:v=>v?`${v.name||''} <span style="font-size:11px;color:var(--text-muted);">${v.email||''}</span>`:'—'},
+            {key:'isRead',      label:'Lue',         render:v=>v?'✓':'—'},
+            {key:'isDelivered', label:'Livrée',      render:v=>v?'✓':'—'},
+            {key:'createdAt',   label:'Date',        render:v=>formatDate(v)}
+          ], items, [
+            {label:'Supprimer', class:'btn-danger btn-sm', onClick:row=>deleteNotif(row)}
+          ]);
+          UI.renderPagination('notifications-pagination', pag, p=>load(p,filters));
+          document.getElementById('n-filter-btn').addEventListener('click',()=>load(1,{
+            type:     document.getElementById('n-type').value.trim(),
+            userId:   document.getElementById('n-user').value.trim(),
+            fromDate: document.getElementById('n-from').value,
+            toDate:   document.getElementById('n-to').value
+          }));
+        } catch(err) { UI.toast(err?.message||'Erreur notifications','error'); }
+      }
+
+      function deleteNotif(n) {
+        UI.modal({
+          title:'Supprimer notification',
+          bodyHTML:`<p>Supprimer <strong>${n.title}</strong> ?</p>`,
+          confirmLabel:'Supprimer', dangerConfirm:true,
+          onConfirm:async()=>{ await API.delete(`notifications/${n._id}`); UI.toast('Notification supprimée','success'); load(page,filters); }
+        });
+      }
+      load(1,{});
+    };
+
+    window.renderAIResults = function() {
+      let page = 1, filters = {};
+
+      async function load(p, f) {
+        page = p; filters = f||{};
+        UI.showLoading('page-content');
+        try {
+          const resp = await API.get('ai-results', buildParams({page:p,limit:20,...f}));
+          const items = resp?.data||[], pag = resp?.pagination||{};
+
+          document.getElementById('page-content').innerHTML = `
+            <div class="filter-bar">
+              <div class="filter-group">
+                <div class="filter-label">Statut pipeline</div>
+                <select class="form-select" id="ai-status">
+                  <option value="">Tous</option>
+                  ${['completed','empty_audio','failed','transcription_failed'].map(s=>`<option value="${s}" ${f.status===s?'selected':''}>${s}</option>`).join('')}
+                </select>
+              </div>
+              <div class="filter-group">
+                <div class="filter-label">Du</div>
+                <input type="date" id="ai-from" class="form-input" value="${f.fromDate||''}">
+              </div>
+              <div class="filter-group">
+                <div class="filter-label">Au</div>
+                <input type="date" id="ai-to" class="form-input" value="${f.toDate||''}">
+              </div>
+              <div class="filter-actions">
+                <button class="btn btn-primary" id="ai-filter-btn">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>
+                  Filtrer
+                </button>
+              </div>
+            </div>
+            <div class="panel"><div id="ai-table"></div></div>
+            <div id="ai-pagination"></div>`;
+
+          document.getElementById('ai-status').value = f.status||'';
+
+          UI.renderTable('ai-table',[
+            {key:'meetingId',      label:'Réunion',     render:v=>v?.title||v||'—'},
+            {key:'pipelineStatus', label:'Statut',      render:v=>UI.renderBadge(v,aiStatusColors)},
+            {key:'summary',        label:'Key Points',  render:v=>(v?.keyPoints?.length||0)},
+            {key:'summary',        label:'Décisions',   render:v=>(v?.decisions?.length||0)},
+            {key:'summary',        label:'Action Items',render:v=>(v?.actionItems?.length||0)},
+            {key:'createdAt',      label:'Date',        render:v=>formatDate(v)}
+          ], items, [
+            {label:'Détail',    class:'btn-secondary btn-sm', onClick:row=>openAIDetail(row)},
+            {label:'Supprimer', class:'btn-danger btn-sm',    onClick:row=>deleteAI(row)}
+          ]);
+          UI.renderPagination('ai-pagination', pag, p=>load(p,filters));
+          document.getElementById('ai-filter-btn').addEventListener('click',()=>load(1,{
+            status:   document.getElementById('ai-status').value,
+            fromDate: document.getElementById('ai-from').value,
+            toDate:   document.getElementById('ai-to').value
+          }));
+        } catch(err) { UI.toast(err?.message||'Erreur IA','error'); }
+      }
+
+      function openAIDetail(r) {
+        UI.modal({
+          title:'Détail Resumé IA',
+          bodyHTML:`
+            <div class="panel" style="margin-bottom:12px;"><div class="panel-head">Key Points</div><div class="panel-body"><ul style="padding-left:16px;font-size:13px;display:flex;flex-direction:column;gap:5px;">${(r?.summary?.keyPoints||[]).map(k=>`<li>${k}</li>`).join('')||'<li style="color:var(--text-muted);">Aucun</li>'}</ul></div></div>
+            <div class="panel" style="margin-bottom:12px;"><div class="panel-head">Décisions</div><div class="panel-body"><ul style="padding-left:16px;font-size:13px;display:flex;flex-direction:column;gap:5px;">${(r?.summary?.decisions||[]).map(k=>`<li>${k}</li>`).join('')||'<li style="color:var(--text-muted);">Aucune</li>'}</ul></div></div>
+            <div class="panel"><div class="panel-head">Action Items</div><div class="panel-body"><ul style="padding-left:16px;font-size:13px;display:flex;flex-direction:column;gap:5px;">${(r?.summary?.actionItems||[]).map(k=>`<li>${k?.text||k}</li>`).join('')||'<li style="color:var(--text-muted);">Aucun</li>'}</ul></div></div>`,
+          confirmLabel:'Fermer', hideCancel:true, onConfirm:async()=>{}
+        });
+      }
+
+      function deleteAI(r) {
+        const id = r?.meetingId?._id||r?.meetingId||'';
+        UI.modal({
+          title:'Supprimer résultat IA',
+          bodyHTML:`<p>Supprimer le résultat IA pour <strong>${id}</strong> ?</p>`,
+          confirmLabel:'Supprimer', dangerConfirm:true,
+          onConfirm:async()=>{ await API.delete(`ai-results/${id}`); UI.toast('Résultat IA supprimé','success'); load(page,filters); }
+        });
+      }
+      load(1,{});
+    };
+
+    window.renderMaintenance = function() {
+      document.getElementById('page-content').innerHTML = `
+        <div class="panel">
+          <div class="panel-head">
+            <div style="display:flex;align-items:center;gap:10px;">
+              <div style="width:36px;height:36px;background:rgba(139,92,246,.08);border-radius:10px;display:flex;align-items:center;justify-content:center;">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#8B5CF6" stroke-width="2"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/></svg>
+              </div>
+              Réinitialiser &amp; Redéclencher Pipeline IA
+            </div>
+          </div>
+          <div class="panel-body">
+            <p style="margin-bottom:16px;color:var(--text-secondary);font-size:13.5px;line-height:1.6;">
+              Sélectionnez une réunion dont le pipeline IA a échoué, puis déclenchez ou programmez son retraitement.
+              Seules les réunions disposant d'un enregistrement audio disponible sont listées.
+            </p>
+
+            <!-- Step 1: Select meeting -->
+            <div class="form-group">
+              <label class="form-label">Réunion à retraiter</label>
+              <select class="form-select" id="ai-reset-select">
+                <option value="">— Chargement… —</option>
+              </select>
+            </div>
+
+            <!-- Step 2: Schedule -->
+            <div class="form-group" id="ai-reset-schedule-group" style="display:none;">
+              <label class="form-label">Date &amp; heure de déclenchement</label>
+              <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+                <input type="datetime-local" class="form-input" id="ai-reset-datetime" style="max-width:280px;">
+                <button class="btn btn-secondary btn-sm" id="ai-reset-now-btn" title="Déclencher maintenant">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                  Maintenant
+                </button>
+              </div>
+              <div style="font-size:11.5px;color:#94A3B8;margin-top:6px;">
+                Laissez vide ou cliquez "Maintenant" pour un déclenchement immédiat. Maximum 24h dans le futur.
+              </div>
+            </div>
+
+            <!-- Action buttons -->
+            <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:4px;" id="ai-reset-actions" style="display:none;">
+              <button class="btn btn-primary" id="ai-reset-submit-btn" disabled>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-4.34"/></svg>
+                Déclencher
+              </button>
+            </div>
+
+            <!-- Countdown / status -->
+            <div id="ai-reset-status" style="margin-top:16px;display:none;">
+              <div style="background:#F8FAFC;border:1px solid var(--border);border-radius:12px;padding:16px;">
+                <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;">
+                  <div>
+                    <div style="font-size:13px;font-weight:600;color:#0F172A;" id="ai-reset-status-title"></div>
+                    <div style="font-size:12px;color:#94A3B8;margin-top:3px;" id="ai-reset-status-sub"></div>
+                  </div>
+                  <button class="btn btn-danger btn-sm" id="ai-reset-cancel-btn" style="display:none;">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                    Annuler le job
+                  </button>
+                </div>
+                <div style="font-size:11.5px;color:#F97316;margin-top:10px;display:flex;align-items:center;gap:6px;" id="ai-reset-warning" style="display:none;">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+                  Ne pas redémarrer le serveur avant l'exécution — le job sera perdu.
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="panel" style="margin-top:20px;">
+          <div class="panel-head">
+            <div style="display:flex;align-items:center;gap:10px;">
+              <div style="width:36px;height:36px;background:rgba(249,115,22,.08);border-radius:10px;display:flex;align-items:center;justify-content:center;">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#F97316" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.23 11 19.79 19.79 0 0 1 1.13 2.25 2 2 0 0 1 3.11 0h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L7.09 7.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 21 14.1l.92 2.82z"/></svg>
+              </div>
+              Diffusion Globale
+            </div>
+          </div>
+          <div class="panel-body">
+            <p style="margin-bottom:20px;color:var(--text-secondary);font-size:13.5px;line-height:1.6;">Envoie une notification push à tous les utilisateurs en temps réel via WebSocket.</p>
+            <div class="form-group">
+              <label class="form-label">Type de message</label>
+              <select id="broadcast-type" class="form-select">
+                <option value="info">ℹ️ Info</option>
+                <option value="warning">⚠️ Avertissement</option>
+                <option value="maintenance">🔧 Maintenance</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Titre</label>
+              <input type="text" id="broadcast-title" class="form-input" placeholder="Ex : Maintenance planifiée" maxlength="100">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Message</label>
+              <input type="text" id="broadcast-message" class="form-input" placeholder="Ex : Le serveur sera indisponible ce soir de 22h à 23h" maxlength="300">
+            </div>
+            <button class="btn btn-primary" id="broadcast-btn">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+              Envoyer à tous
+            </button>
+            <div id="broadcast-result" class="pre-result" style="margin-top:14px;display:none;"></div>
+          </div>
+        </div>`;
+
+      // ── AI Reset section logic ───────────
+      let currentScheduledMeetingId = null;
+      let countdownInterval = null;
+
+      const selectEl       = document.getElementById('ai-reset-select');
+      const scheduleGroup  = document.getElementById('ai-reset-schedule-group');
+      const actionsDiv     = document.getElementById('ai-reset-actions');
+      const submitBtn      = document.getElementById('ai-reset-submit-btn');
+      const nowBtn         = document.getElementById('ai-reset-now-btn');
+      const datetimeInput  = document.getElementById('ai-reset-datetime');
+      const statusBox      = document.getElementById('ai-reset-status');
+      const statusTitle    = document.getElementById('ai-reset-status-title');
+      const statusSub      = document.getElementById('ai-reset-status-sub');
+      const cancelBtn      = document.getElementById('ai-reset-cancel-btn');
+      const warningEl      = document.getElementById('ai-reset-warning');
+
+      // Set datetime min to now, max to +24h
+      function refreshDatetimeBounds() {
+        const now = new Date();
+        const max = new Date(now.getTime() + 24 * 60 * 60 * 1000);
+        const pad = n => String(n).padStart(2, '0');
+        const fmt = d => `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`;
+        datetimeInput.min = fmt(now);
+        datetimeInput.max = fmt(max);
+      }
+
+      // Load failed meetings into select
+      async function loadFailedMeetings() {
+        selectEl.innerHTML = '<option value="">— Chargement… —</option>';
+        try {
+          const resp = await API.get('maintenance/failed-ai-meetings');
+          const meetings = resp?.data || [];
+          if (!meetings.length) {
+            selectEl.innerHTML = '<option value="">Aucune réunion retraitable</option>';
+            submitBtn.disabled = true;
+            return;
+          }
+          selectEl.innerHTML = '<option value="">— Sélectionnez une réunion —</option>' +
+            meetings.map(m => {
+              const d = m.startTime ? new Date(m.startTime).toLocaleDateString('fr-FR') : '—';
+              return `<option value="${m._id}">${m.title} (${d})</option>`;
+            }).join('');
+        } catch (err) {
+          selectEl.innerHTML = '<option value="">Erreur de chargement</option>';
+          UI.toast('Impossible de charger les réunions failed', 'error');
+        }
+      }
+
+      selectEl.addEventListener('change', () => {
+        const selected = selectEl.value;
+        if (selected) {
+          scheduleGroup.style.display = 'block';
+          actionsDiv.style.display    = 'flex';
+          submitBtn.disabled          = false;
+          refreshDatetimeBounds();
+        } else {
+          scheduleGroup.style.display = 'none';
+          actionsDiv.style.display    = 'none';
+          submitBtn.disabled          = true;
+        }
+      });
+
+      nowBtn.addEventListener('click', () => {
+        datetimeInput.value = '';
+      });
+
+      function startCountdown(targetDate, meetingId, meetingTitle) {
+        if (countdownInterval) clearInterval(countdownInterval);
+        currentScheduledMeetingId = meetingId;
+
+        cancelBtn.style.display = 'block';
+        warningEl.style.display = 'flex';
+        statusBox.style.display = 'block';
+
+        function tick() {
+          const remaining = targetDate.getTime() - Date.now();
+          if (remaining <= 0) {
+            clearInterval(countdownInterval);
+            countdownInterval = null;
+            statusTitle.textContent = `Pipeline déclenché — ${meetingTitle}`;
+            statusSub.textContent   = 'Le retraitement est en cours sur le serveur.';
+            cancelBtn.style.display = 'none';
+            warningEl.style.display = 'none';
+            currentScheduledMeetingId = null;
+            loadFailedMeetings(); 
+            return;
+          }
+          const h   = Math.floor(remaining / 3600000);
+          const min = Math.floor((remaining % 3600000) / 60000);
+          const sec = Math.floor((remaining % 60000) / 1000);
+          const pad = n => String(n).padStart(2, '0');
+          statusTitle.textContent = `⏳ ${meetingTitle}`;
+          statusSub.textContent   = `Déclenchement dans ${h > 0 ? h+'h ' : ''}${pad(min)}m ${pad(sec)}s`;
+        }
+        tick();
+        countdownInterval = setInterval(tick, 1000);
+      }
+
+      // Cancel btn
+      cancelBtn.addEventListener('click', async () => {
+        if (!currentScheduledMeetingId) return;
+        try {
+          await API.delete(`maintenance/reset-ai-meeting/${currentScheduledMeetingId}/cancel`);
+          clearInterval(countdownInterval);
+          countdownInterval = null;
+          currentScheduledMeetingId = null;
+          statusBox.style.display = 'none';
+          cancelBtn.style.display = 'none';
+          warningEl.style.display = 'none';
+          UI.toast('Job annulé', 'success');
+          loadFailedMeetings();
+        } catch (err) {
+          UI.toast(err?.message || 'Erreur annulation', 'error');
+        }
+      });
+
+      // Submit btn 
+      submitBtn.addEventListener('click', async () => {
+        const meetingId    = selectEl.value;
+        const meetingTitle = selectEl.options[selectEl.selectedIndex]?.text || '';
+        if (!meetingId) { UI.toast('Sélectionnez une réunion', 'error'); return; }
+
+        const rawDatetime  = datetimeInput.value;
+        const scheduledAt  = rawDatetime ? new Date(rawDatetime).toISOString() : null;
+        const isImmediate  = !scheduledAt;
+
+        const confirmMsg = isImmediate
+          ? `Déclencher immédiatement le pipeline IA pour <strong>${meetingTitle}</strong> ?`
+          : `Programmer le pipeline IA pour <strong>${meetingTitle}</strong> à <strong>${new Date(scheduledAt).toLocaleString('fr-FR')}</strong> ?`;
+
+        UI.modal({
+          title: isImmediate ? 'Confirmer le déclenchement' : 'Confirmer la programmation',
+          bodyHTML: `<p>${confirmMsg}</p>`,
+          confirmLabel: isImmediate ? 'Déclencher' : 'Programmer',
+          onConfirm: async () => {
+            try {
+              const body = scheduledAt ? { scheduledAt } : {};
+              const resp = await API.post(`maintenance/reset-ai-meeting/${meetingId}`, body);
+              const data = resp?.data || {};
+
+              if (data.status === 'scheduled') {
+                const targetDate = new Date(data.scheduledAt);
+                startCountdown(targetDate, meetingId, meetingTitle);
+                UI.toast(`Job programmé pour ${targetDate.toLocaleString('fr-FR')}`, 'success');
+              } else {
+                statusBox.style.display  = 'block';
+                statusTitle.textContent  = `✅ Pipeline déclenché — ${meetingTitle}`;
+                statusSub.textContent    = 'Le retraitement démarre en arrière-plan.';
+                cancelBtn.style.display  = 'none';
+                warningEl.style.display  = 'none';
+                UI.toast('Pipeline IA déclenché', 'success');
+                loadFailedMeetings();
+              }
+
+              selectEl.value           = '';
+              datetimeInput.value      = '';
+              scheduleGroup.style.display = 'none';
+              actionsDiv.style.display    = 'none';
+              submitBtn.disabled          = true;
+            } catch (err) {
+              UI.toast(err?.message || 'Erreur déclenchement', 'error');
+            }
+          }
+        });
+      });
+
+      // Initial load
+      loadFailedMeetings();
+
+      document.getElementById('broadcast-btn').onclick = async () => {
+        const type    = document.getElementById('broadcast-type').value;
+        const title   = document.getElementById('broadcast-title').value.trim();
+        const message = document.getElementById('broadcast-message').value.trim();
+        if (!title||!message) { UI.toast('Titre et message requis','error'); return; }
+        UI.modal({
+          title:'Confirmer la diffusion',
+          bodyHTML:`<p style="margin-bottom:12px;">Envoyer ce message à <strong>tous les utilisateurs</strong> ?</p>
+            <div style="background:#F8FAFC;border:1px solid var(--border);border-radius:10px;padding:14px;">
+              <div style="font-weight:600;margin-bottom:4px;">[${type}] ${title}</div>
+              <div style="font-size:13px;color:var(--text-secondary);">${message}</div>
+            </div>`,
+          confirmLabel:'Envoyer',
+          onConfirm:async()=>{
+            const el = document.getElementById('broadcast-result');
+            el.style.display='none'; el.textContent='';
+            try {
+              const res = await API.post('broadcast',{title,message,type});
+              UI.toast(`Broadcast envoyé (${res?.data?.recipientCount||0} utilisateurs)`,'success');
+              document.getElementById('broadcast-title').value='';
+              document.getElementById('broadcast-message').value='';
+              el.textContent=JSON.stringify(res?.data,null,2); el.style.display='block';
+            } catch(err) { UI.toast(err?.message||'Erreur','error'); }
+          }
+        });
+      };
+    };
+
+    window.renderSystem = async function() {
+      UI.showLoading('page-content');
+      try {
+        const resp = await API.get('system/status');
+        const data = resp?.data||{}, col = data.collections||{}, proc = data.process||{};
+        const up = proc.uptime||0;
+        const uptimeStr = `${Math.floor(up/3600)}h ${Math.floor((up%3600)/60)}m ${up%60}s`;
+
+        document.getElementById('page-content').innerHTML = `
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;">
+            <div class="panel">
+              <div class="panel-head">Collections MongoDB</div>
+              <div class="panel-body" style="padding:0;">
+                ${Object.entries(col).map(([k,v])=>`
+                  <div style="display:flex;justify-content:space-between;align-items:center;padding:13px 22px;border-bottom:1px solid var(--border);">
+                    <span style="font-size:13.5px;color:var(--text-secondary);text-transform:capitalize;">${k}</span>
+                    <span style="font-family:'Sora',sans-serif;font-weight:700;font-size:15px;color:var(--text-primary);">${v}</span>
+                  </div>`).join('')}
+              </div>
+            </div>
+            <div class="panel">
+              <div class="panel-head">Informations processus</div>
+              <div class="panel-body" style="display:flex;flex-direction:column;gap:14px;">
+                ${[
+                  ['Node.js',  proc.nodeVersion||'—'],
+                  ['Uptime',   uptimeStr],
+                  ['PID',      proc.pid||'—'],
+                  ['Mémoire',  (proc.memoryMB||0)+' MB'],
+                  ['Env',      data.env||'—']
+                ].map(([k,v])=>`
+                  <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--border);">
+                    <span style="font-size:13px;color:var(--text-muted);font-weight:600;text-transform:uppercase;letter-spacing:.06em;">${k}</span>
+                    <span style="font-family:'Sora',sans-serif;font-weight:600;font-size:14px;color:var(--text-primary);">${v}</span>
+                  </div>`).join('')}
+              </div>
+            </div>
+          </div>`;
+      } catch(err) { UI.toast(err?.message||'Erreur système','error'); }
+    };
+
+    function initAdminInfo() {
+      const user = API.currentUser();
+      if (user) {
+        document.getElementById('admin-name').textContent  = user.name||'Admin';
+        document.getElementById('admin-email').textContent = user.email||'';
+      }
+    }
+
+    initAdminInfo();
+    Router.init();
+  </script>
+</body>
+</html>
