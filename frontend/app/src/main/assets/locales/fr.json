@@ -1,0 +1,21 @@
+{
+  "app_name": "Convene",
+  "app_tagline": "Rassembler les moments de connexion les plus lumineux.",
+  "onboarding_skip": "Passer",
+  "onboarding_next": "Suivant",
+  "onboarding_get_started": "Commencer",
+  "onboarding_1_title": "Energie et",
+  "onboarding_1_highlight": "Focus",
+  "onboarding_1_subtitle": "Retrouvez la vitalite necessaire pour accomplir vos taches les plus importantes.",
+  "onboarding_2_title": "Organisez avec",
+  "onboarding_2_highlight": "Serenite",
+  "onboarding_2_subtitle": "Gerez vos projets et reunions dans un environnement concu pour votre bien-etre.",
+  "onboarding_3_title": "Bienvenue dans la",
+  "onboarding_3_highlight": "Communaute",
+  "onboarding_3_subtitle": "Rejoignez des milliers de professionnels qui transforment leur quotidien.",
+  "auth_sign_in": "Se connecter",
+  "auth_create_account": "Creer un compte",
+  "auth_email": "Adresse email",
+  "auth_password": "Mot de passe",
+  "profile_language_title": "Langue"
+}

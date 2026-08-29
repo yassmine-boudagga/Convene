@@ -1,0 +1,21 @@
+{
+  "app_name": "Convene",
+  "app_tagline": "Gathering the radiant moments of connection.",
+  "onboarding_skip": "Skip",
+  "onboarding_next": "Next",
+  "onboarding_get_started": "Get Started",
+  "onboarding_1_title": "Energy and",
+  "onboarding_1_highlight": "Focus",
+  "onboarding_1_subtitle": "Find the vitality you need to accomplish your most important tasks.",
+  "onboarding_2_title": "Organize with",
+  "onboarding_2_highlight": "Serenity",
+  "onboarding_2_subtitle": "Manage projects and meetings in an environment designed for your well-being.",
+  "onboarding_3_title": "Welcome to the",
+  "onboarding_3_highlight": "Community",
+  "onboarding_3_subtitle": "Join thousands of professionals transforming their daily work.",
+  "auth_sign_in": "Sign In",
+  "auth_create_account": "Create Account",
+  "auth_email": "Email Address",
+  "auth_password": "Password",
+  "profile_language_title": "Language"
+}
